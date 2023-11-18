@@ -1,5 +1,2 @@
-django
-djangorestframework
-pyyaml
-requests
-django-cors-headers
+-r requirements-dev.txt
+gunicorn
