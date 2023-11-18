@@ -58,3 +58,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
         return self
+    
+    class Meta:
+        ordering = ('-email',)
