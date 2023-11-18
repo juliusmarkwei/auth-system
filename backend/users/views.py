@@ -1,15 +1,21 @@
-from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import RetrieveUpdateAPIView
+from .models import User
+from rest_framework_jwt.utils import jwt, jwt_payload_handler
+from core import settings
+from django.contrib.auth.signals import user_logged_in
 
 
-class CreateUserAPIView(APIView):
+class CreateUserAPIView(ListCreateAPIView):
     # Allow any user (authenticated or not) to access this url
     permission_classes = (AllowAny,)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
     def post(self, request):
         user = request.data
