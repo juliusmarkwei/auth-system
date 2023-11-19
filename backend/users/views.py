@@ -26,6 +26,9 @@ class CreateUserAPIView(ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+authentication_data = None
+
+
 @api_view(["POST"])
 @permission_classes(
     [
@@ -45,6 +48,8 @@ def authenticate_user(request):
                 user_details["name"] = "%s %s" % (user.first_name, user.last_name)
                 user_details["token"] = token
                 user_logged_in.send(sender=user.__class__, request=request, user=user)
+                authentication_data = user_details
+                authentication_data["email"] = email
                 return Response(user_details, status=status.HTTP_200_OK)
             except Exception as e:
                 raise e
