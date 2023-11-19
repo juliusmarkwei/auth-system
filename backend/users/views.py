@@ -5,10 +5,11 @@ from rest_framework import status
 from .serializers import UserSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import RetrieveUpdateAPIView
-from .models import User
+from .models import User, UserTokens
 from rest_framework_jwt.utils import jwt, jwt_payload_handler
 from core import settings
 from django.contrib.auth.signals import user_logged_in
+from django.utils import timezone
 
 
 class CreateUserAPIView(ListCreateAPIView):
@@ -50,6 +51,11 @@ def authenticate_user(request):
                 user_logged_in.send(sender=user.__class__, request=request, user=user)
                 authentication_data = user_details
                 authentication_data["email"] = email
+
+                user_token, created = UserTokens.objects.get_or_create(email=email)
+                user_token.token = "..." + str(user_details["token"])[-30:-1]
+                user_token.last_updated = timezone.now()
+                user_token.save()
                 return Response(user_details, status=status.HTTP_200_OK)
             except Exception as e:
                 raise e
