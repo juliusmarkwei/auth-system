@@ -6,7 +6,6 @@ from django.contrib.auth.models import (
 )
 from django.utils import timezone
 from django.db import transaction
-from .views import authentication_data
 
 
 class UserManager(BaseUserManager):
@@ -67,24 +66,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserTokens(models.Model):
-    user = models.CharField(
+    email = models.CharField(
         max_length=50,
         unique=True,
         primary_key=True,
-        on_delete=models.CASCADE,
         verbose_name="user email",
     )
-    token = models.CharField(max_length=200)
-
-    def save(self, *args, **kwargs):
-        self.access_token = authentication_data["token"]
-        self.user = authentication_data["email"]
-
-        super(UserTokens, self).save(*args, **kwargs)
+    token = models.CharField(max_length=5000)
+    last_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.user
 
     class Meta:
-        verbose_name = "User Tokens"
+        verbose_name = "User Token"
         verbose_name_plural = "User Tokens"
