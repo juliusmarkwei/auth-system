@@ -4,6 +4,11 @@
 
 This project implements a robust User Authentication System, designed to manage user registrations and logins efficiently and securely. It uses Django framework for backend operations, emphasizing security and ease of use.
 
+<h3>User Authentication Doc's</h3>
+<hr>
+<br>
+<img src="./backend/img/docs.png" alt="Doc's image" width="100%" heigth="50%">
+
 ## Features
 
 - **User Model Customization**: Custom user model defined in `models.py`.
