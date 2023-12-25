@@ -1,4 +1,3 @@
 venv/
-backend/core/settings.py
 *pyc
-*.env
+*.envbackend/core/settings/.env
