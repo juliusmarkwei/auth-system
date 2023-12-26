@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 SECRET_KEY =  env('SECRET_KEY')
-DEBUG =True
+DEBUG =env("DEBUG")
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
