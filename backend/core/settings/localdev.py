@@ -137,6 +137,7 @@ AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend',
 )
 
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
