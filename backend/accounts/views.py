@@ -31,11 +31,7 @@ authentication_data = None
 
 
 @api_view(["POST"])
-@permission_classes(
-    [
-        AllowAny,
-    ]
-)
+@permission_classes([AllowAny,])
 def authenticate_user(request):
     try:
         email = request.data["email"]
