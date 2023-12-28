@@ -8,6 +8,9 @@ from rest_framework.documentation import include_docs_urls
 
 
 urlpatterns = [
+    #default drf authentincation
+    path("api-auth/", include("rest_framework.urls")),
+
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
    
@@ -15,5 +18,5 @@ urlpatterns = [
     
     path("accounts/", include("accounts.urls", namespace="accounts")),
     
-    path("", include_docs_urls(title="Authentication System's Docs")),
+    # path("", include_docs_urls(title="Authentication System's Docs")),
 ]
