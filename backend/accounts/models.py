@@ -42,7 +42,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=40, unique=True)
-    verified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=100, unique=True)
@@ -71,14 +71,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = "Users"
 
 
-class UserTokens(models.Model):
-    username = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
-    token = models.CharField(max_length=5000)
-    last_updated = models.DateTimeField(default=timezone.now)
-
+class EmailConfirmationToken(models.Model):
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    
     def __str__(self):
-        return self.username
+        return self.user
 
     class Meta:
-        verbose_name = "User Account Token"
-        verbose_name_plural = "User Account Tokens"
+        verbose_name = "Email Confirmation Token"
+        verbose_name_plural = "Email Confirmation Tokens"
