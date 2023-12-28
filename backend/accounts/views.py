@@ -1,16 +1,10 @@
-from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import RetrieveUpdateAPIView
-from .models import User, UserTokens
-from rest_framework_jwt.utils import jwt, jwt_payload_handler
-from core import settings
-from django.contrib.auth.signals import user_logged_in
-from django.utils import timezone
+from .models import User, EmailConfirmationToken
+from .utils import send_confirmation_email
 
 
 class UserAPIView(APIView):
@@ -27,54 +21,9 @@ class UserAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-authentication_data = None
-
-
-@api_view(["POST"])
-@permission_classes([AllowAny,])
-def authenticate_user(request):
-    try:
-        email = request.data["email"]
-        password = request.data["password"]
-        user = User.objects.get(email=email, password=password)
-        if user:
-            try:
-                payload = jwt_payload_handler(user)
-                token = jwt.encode(payload, settings.SECRET_KEY)
-                user_details = {}
-                user_details["name"] = "%s %s" % (user.first_name, user.last_name)
-                user_details["token"] = token
-                user_logged_in.send(sender=user.__class__, request=request, user=user)
-                authentication_data = user_details
-                authentication_data["email"] = email
-
-                user_token, created = UserTokens.objects.get_or_create(email=email)
-                user_token.token = "..." + str(user_details["token"])[-30:-1]
-                user_token.last_updated = timezone.now()
-                user_token.save()
-                return Response(user_details, status=status.HTTP_200_OK)
-            except Exception as e:
-                raise e
-        else:
-            res = {
-                "error": "can not authenticate with the given credentials or the account has been deactivated"
-            }
-            return Response(res, status=status.HTTP_403_FORBIDDEN)
-
-    except KeyError:
-        res = {"error": "please provide a email and a password"}
-        return Response(res)
-
-
-class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
-    # Allow only authenticated users to access this url
-    permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
-
-    def get(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # def get(self, request, *args, **kwargs):
+    #     serializer = self.serializer_class(request.user)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, *args, **kwargs):
         serializer_data = request.data.get("user", {})
@@ -83,3 +32,26 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserInformationAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        email = user.email
+        is_verified = user.is_verified
+        
+        payload = {"email": email, "is_verified": is_verified}
+        return Response(data=payload, status=status.HTTP_200_OK)
+    
+    
+class SendEmailConfirmationTokenAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, format=None):
+        user = request.user
+        token = EmailConfirmationToken.objects.create(user=user)
+        send_confirmation_email(email=user.email, token_id=token.pk, user_id=user.pk)
+        
+        return Response(data=None, status=status.HTTP_201_CREATED)
