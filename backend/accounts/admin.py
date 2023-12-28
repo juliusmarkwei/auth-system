@@ -12,15 +12,17 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = [
         "id",
         "username",
+        "verified",
         "first_name",
         "last_name",
         "email",
         "is_staff",
-        "telephone",
+        "phone",
         "date_joined",
+        "updated_at",
     ]
 
 
 @admin.register(UserTokens)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ["email", "token", "last_updated"]
+    list_display = ["username", "token", "last_updated"]
