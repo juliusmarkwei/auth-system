@@ -9,55 +9,61 @@ from django.db import transaction
 
 
 class UserManager(BaseUserManager):
-    def _create_user(self, email, password, **extra_fields):
-        """
-        Creates and saves a User with the given email,and password.
-        """
-
+    def create_user(self, username, first_name, last_name, email, password, phone, **other_fields):
         if not email:
-            raise ValueError("The given email must be set")
-        try:
-            with transaction.atomic():
-                user = self.model(email=email, **extra_fields)
-                user.set_password(password)
+            raise ValueError(_("You must provide an email address"))
+        email = self.normalize_email(email)
+        user = self.model(
+            email=email,
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            phone=phone,
+            **other_fields
+        )
+        user.set_password(password)
+        user.save()
+        return user
 
-                user.save(using=self._db)
-                return user
-        except:
-            raise
+    def create_superuser(self, username, first_name, last_name, email, password, **other_fields):
+        other_fields.setdefault("is_staff", True)
+        other_fields.setdefault("is_superuser", True)
+        other_fields.setdefault("is_active", True)
 
-    def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault("is_staff", False)
-        extra_fields.setdefault("is_superuser", False)
+        if other_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must be assigned to is_staff=True")
 
-        return self._create_user(email, password, **extra_fields)
+        if other_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must be assigned to is_superuser=True")
 
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
+        return self.create_user(username, first_name, last_name, email, password, **other_fields)
 
-        return self._create_user(email, password=password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=40, unique=True)
+    verified = models.BooleanField(default=False)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=100, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     address = models.CharField(max_length=100, blank=True, null=True)
-    telephone = models.CharField(max_length=20, blank=True, null=True)
-    date_joined = models.DateTimeField(default=timezone.now)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     objects = UserManager()
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email", "phone", "first_name", "last_name"]
 
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
         return self
+    
+    def __str__(self):
+        return self.username
 
     class Meta:
         ordering = ("-date_joined",)
@@ -66,18 +72,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserTokens(models.Model):
-    email = models.CharField(
-        max_length=50,
-        unique=True,
-        primary_key=True,
-        verbose_name="user email",
-    )
+    username = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     token = models.CharField(max_length=5000)
     last_updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.user
+        return self.username
 
     class Meta:
-        verbose_name = "User Token"
-        verbose_name_plural = "User Tokens"
+        verbose_name = "User Account Token"
+        verbose_name_plural = "User Account Tokens"
