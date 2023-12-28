@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,7 +13,7 @@ from django.contrib.auth.signals import user_logged_in
 from django.utils import timezone
 
 
-class CreateUserAPIView(ListCreateAPIView):
+class UserAPIView(APIView):
     # Allow any user (authenticated or not) to access this url
     permission_classes = (AllowAny,)
     queryset = User.objects.all()
@@ -72,9 +73,6 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
-        # serializer to handle turning our `User` object into something that
-
-        # can be JSONified and sent to the client.
         serializer = self.serializer_class(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
