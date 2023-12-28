@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, UserTokens
+from .models import User, EmailConfirmationToken
 
 
 # admin.site.register(User)
@@ -12,7 +12,7 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = [
         "id",
         "username",
-        "verified",
+        "is_verified",
         "first_name",
         "last_name",
         "email",
@@ -23,6 +23,6 @@ class AuthorAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(UserTokens)
+@admin.register(EmailConfirmationToken)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ["username", "token", "last_updated"]
+    list_display = ["user", "created_at", "updated_at"]
