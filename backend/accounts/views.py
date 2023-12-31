@@ -8,8 +8,7 @@ from .utils import send_confirmation_email
 
 
 class UserAPIView(APIView):
-    permission_classes = (AllowAny,)
-    serializer_class = UserSerializer
+    permission_classes = [AllowAny,]
 
     def post(self, request):
         user = request.data
@@ -24,7 +23,7 @@ class UserAPIView(APIView):
     
     def get(self, request, *args, **kwargs):
         users = self.get_queryset()
-        serializer = self.serializer_class(users, many=True)
+        serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, *args, **kwargs):
