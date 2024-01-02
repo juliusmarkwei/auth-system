@@ -20,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
             "updated_at",
             "password"
         )
-
         extra_kwargs = {"password": {"write_only": True}}
         
     def create(self, validated_data):
@@ -34,3 +33,4 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
