@@ -56,3 +56,4 @@ class SendEmailConfirmationTokenAPIView(APIView):
         send_confirmation_email(email=user.email, token_id=token.pk, user_id=user.pk)
         
         return Response(data=None, status=status.HTTP_201_CREATED)
+    
