@@ -3,10 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User, EmailConfirmationToken
 
 
-# admin.site.register(User)
-# admin.site.register(UserTokens)
-
-
 @admin.register(User)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = [
