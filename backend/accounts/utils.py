@@ -17,3 +17,4 @@ def send_confirmation_email(email, token_id, user_id):
         fail_silently=True
     )
     print("Email confirmation sent!")
+    
