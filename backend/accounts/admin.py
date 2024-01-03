@@ -22,3 +22,4 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(EmailConfirmationToken)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ["user", "created_at", "updated_at"]
+    
