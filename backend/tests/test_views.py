@@ -33,3 +33,4 @@ class TestUserView(APITestCase):
         self.assertEqual(reponse.status_code, status.HTTP_201_CREATED)
         token = EmailConfirmationToken.objects.filter(user=user).first()
         self.assertIsNotNone(token)
+        
