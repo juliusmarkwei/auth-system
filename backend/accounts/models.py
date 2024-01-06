@@ -82,3 +82,4 @@ class EmailConfirmationToken(models.Model):
     class Meta:
         verbose_name = "Email Confirmation Token"
         verbose_name_plural = "Email Confirmation Tokens"
+        
