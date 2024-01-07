@@ -149,5 +149,3 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "juliusmarkwei2000@gmail.com"
 EMAIL_HOST_PASSWORD = "0550271904$,/julius"
-
-
