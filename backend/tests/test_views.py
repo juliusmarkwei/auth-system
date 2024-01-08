@@ -34,4 +34,3 @@ class TestUserView(APITestCase):
         token = EmailConfirmationToken.objects.filter(user=user).first()
         self.assertIsNotNone(token)
         
-    
