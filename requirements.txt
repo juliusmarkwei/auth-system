@@ -30,3 +30,4 @@ static3==0.7.0
 typing_extensions==4.8.0
 uritemplate==4.1.1
 urllib3==2.1.0
+
