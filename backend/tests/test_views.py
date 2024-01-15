@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from accounts.models import EmailConfirmationToken
 from rest_framework import status
 
+
 class TestUserView(APITestCase):
     client = APIClient()
     User = get_user_model()
