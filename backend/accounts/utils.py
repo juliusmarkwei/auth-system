@@ -1,5 +1,4 @@
 from django.core.mail import send_mail
-from django.template.loader import get_template
 
 
 def send_confirmation_email(email, token_id, user_id):
@@ -8,9 +7,9 @@ def send_confirmation_email(email, token_id, user_id):
         "user_id": str(user_id)
     }
     
-    message = get_template("accounts/confirmation_email.txt").render(data)
+    message = f"Hello {user_id}, your confirmation token is {token_id}"
     send_mail(
-        subject="Email Confirmation",
+        subject="Email Confirmation Testing",
         message=message,
         from_email="juliusmarkwei2000@gmail.com",
         recipient_list=[email],
