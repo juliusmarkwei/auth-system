@@ -52,7 +52,13 @@ class SendEmailConfirmationTokenAPIView(APIView):
     
     def post(self, request, format=None):
         user = request.user
-        token = EmailConfirmationToken.objects.create(user=user)
+        if user != EmailConfirmationToken.objects.get(user=user).user:
+            token = EmailConfirmationToken.objects.create(user=user)
+        
+        if user.is_verified:
+            return Response({"message": "Email accournt already registerd with associated user"})
+        else:
+            token = EmailConfirmationToken.objects.get(user=user)
         send_confirmation_email(email=user.email, token_id=token.pk, user_id=user.pk)
         
         return Response(data=None, status=status.HTTP_201_CREATED)
