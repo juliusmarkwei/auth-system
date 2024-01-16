@@ -134,19 +134,19 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 
 
 # SMTP backend settings
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = False
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "juliusmarkwei2000@gmail.com"
-EMAIL_HOST_PASSWORD = "0550271904$,/julius"
+EMAIL_HOST_PASSWORD = "0550271894$,/julius"
 
