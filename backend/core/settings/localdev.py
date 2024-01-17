@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "accounts",
     "rest_framework",
     "rest_framework_simplejwt",  # drf jwt
+    "djoser",
 ]
 
 MIDDLEWARE = [
@@ -147,6 +148,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = False
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = "juliusmarkwei2000@gmail.com"
-EMAIL_HOST_PASSWORD = "0550271894$,/julius"
+# EMAIL_HOST_USER = "juliusmarkwei2000@gmail.com"
+# EMAIL_HOST_PASSWORD = "0550271894$,/julius"
 
