@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     "accounts",
     "rest_framework",
     "rest_framework_simplejwt",  # drf jwt
-    "djoser",
 ]
 
 MIDDLEWARE = [
@@ -150,4 +149,3 @@ EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_USE_SSL = env("EMAIL_PORT")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-
