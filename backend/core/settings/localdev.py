@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "accounts",
     "rest_framework",
     "rest_framework_simplejwt",  # drf jwt
+    "djoser",
 ]
 
 MIDDLEWARE = [
@@ -142,10 +143,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 
 
 # SMTP backend settings
-EMAIL_BACKEND = env("EMAIL_BACKEND")
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-EMAIL_PORT = env("EMAIL_PORT")
-EMAIL_USE_SSL = env("EMAIL_PORT")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+# EMAIL_BACKEND = env("EMAIL_BACKEND")
+# EMAIL_HOST = env("EMAIL_HOST")
+# EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+# EMAIL_PORT = env("EMAIL_PORT")
+# EMAIL_USE_SSL = env("EMAIL_PORT")
+# EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
