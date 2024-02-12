@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User
+import bleach
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,7 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
             "updated_at",
             "password"
         )
-        extra_kwargs = {"password": {"write_only": True}}
+        extra_kwargs = {"password": {"write_only": True},
+                        "is_verified": {"read_only": True}}
         
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -33,5 +35,10 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+    
+    def validate(self, data):
+        data['address'] = bleach.clean(data['address'])
+        return data
+    
     
     
