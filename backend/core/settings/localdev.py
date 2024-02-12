@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+from datetime import timedelta
 
 
 env = environ.Env()
@@ -25,16 +26,19 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts",
     "rest_framework",
     'rest_framework.authtoken',
     "rest_framework_simplejwt",  # drf jwt
     "djoser",
+    "accounts",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -123,7 +127,6 @@ AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.BasicAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",  # jwt authentication
         "rest_framework.authentication.TokenAuthentication",
     ],
@@ -134,7 +137,7 @@ REST_FRAMEWORK = {
 }
 
 
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
+# AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 
 # STATICFILES_DIRS = [
@@ -143,16 +146,38 @@ AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 
+# cors allowed origins
+CORS_ALLOW_ALL_ORIGINS = True
 
-# SMTP backend settings
-# EMAIL_BACKEND = env("EMAIL_BACKEND")
-# EMAIL_HOST = env("EMAIL_HOST")
-# EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-# EMAIL_PORT = env("EMAIL_PORT")
-# EMAIL_USE_SSL = env("EMAIL_PORT")
-# EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+# backend configs
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+# MAILER_EMAIL_BACKEND = env("MAILER_EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = 587
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+# DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
 
+# Simple JWT settings config
 SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT',),
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=10)
 }
+
+# Djoser config
+DJOSER = {
+    # 'SERIALIZERS': {
+    #     'user_create': 'core.serializers.UserCreateSerializer',
+    #     'current_user': 'core.serializers.UserSerializer',
+    #     'user': 'core.serializers.UserSerializer',
+    # },
+    'USER_ID_FIELD': 'username',
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'auth/activate/?uid={uid}&token={token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/reset-password/?uid={uid}&token={token}',
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True
+}
+
+DOMAIN = 'localhost:5173'
+SITE_NAME = 'Tutorial'
