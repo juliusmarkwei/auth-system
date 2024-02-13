@@ -151,13 +151,13 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # backend configs
 EMAIL_BACKEND = env("EMAIL_BACKEND")
-# MAILER_EMAIL_BACKEND = env("MAILER_EMAIL_BACKEND")
+MAILER_EMAIL_BACKEND = env("MAILER_EMAIL_BACKEND")
 EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_PORT = 587
+EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-# DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
+DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
 
 # Simple JWT settings config
 SIMPLE_JWT = {
@@ -167,11 +167,6 @@ SIMPLE_JWT = {
 
 # Djoser config
 DJOSER = {
-    # 'SERIALIZERS': {
-    #     'user_create': 'core.serializers.UserCreateSerializer',
-    #     'current_user': 'core.serializers.UserSerializer',
-    #     'user': 'core.serializers.UserSerializer',
-    # },
     'USER_ID_FIELD': 'username',
     'SEND_ACTIVATION_EMAIL': True,
     'ACTIVATION_URL': 'auth/activate/?uid={uid}&token={token}',
