@@ -29,9 +29,9 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework.authtoken',
     "rest_framework_simplejwt",  # drf jwt
-    "djoser",
-    "accounts",
+    "djoser",    
     "corsheaders",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -125,6 +125,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",  # jwt authentication
@@ -135,9 +136,6 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
-
-
-# AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 
 # STATICFILES_DIRS = [
@@ -171,8 +169,8 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'ACTIVATION_URL': 'auth/activate/?uid={uid}&token={token}',
     'PASSWORD_RESET_CONFIRM_URL': 'auth/reset-password/?uid={uid}&token={token}',
-    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True
+    # 'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True 
 }
 
-DOMAIN = 'localhost:5173'
-SITE_NAME = 'Tutorial'
+# DOMAIN = 'localhost:5173'
+# SITE_NAME = 'Tutorial'
