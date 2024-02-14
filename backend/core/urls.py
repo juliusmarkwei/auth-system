@@ -17,8 +17,8 @@ urlpatterns = [
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
     path("admin/", admin.site.urls),
-    path("accounts/", include("accounts.urls", namespace="accounts")),
-    path("docs/", include_docs_urls(
+    path("api/", include("accounts.urls", namespace="accounts")),
+    path("", include_docs_urls(
         title = "Authentication System's Docs",
         description = """
                         A simple authentication system build be extending the functionalities\
