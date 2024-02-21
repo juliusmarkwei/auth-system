@@ -1,5 +1,7 @@
 from djoser import serializers
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from rest_framework.serializers import ModelSerializer
 
 
 User = get_user_model()
@@ -15,3 +17,8 @@ class UserCreateSerializer(serializers.UserCreateSerializer):
             'is_phone_verified': {'read_only': True},
         }
         
+        
+class GroupSerializer(ModelSerializer):
+    class Meta:
+        model = Group
+        fields = '__all__'
