@@ -48,9 +48,10 @@ class GroupView(APIView):
 
 class ManageGroup(APIView):
     def post(self, request):
-        data = request.data
+        data = request.POST
+        print(data)
         user_tobe_added = data['user']
-        group_name = data['group_name']
+        group_name = data['group']
         
         try:
             user_instance = User.objects.get(username=user_tobe_added)
@@ -62,5 +63,21 @@ class ManageGroup(APIView):
             return Response({'error': f'Group {group_name} does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
         user_instance.groups.add(group)
         return Response(status=status.HTTP_201_CREATED)
+    
+    def delete(self, request):
+        data = request.data
+        user_tobe_added = data['user']
+        group_name = data['group']
+        
+        try:
+            user_instance = User.objects.get(username=user_tobe_added)
+        except User.DoesNotExist:
+            return Response({'error': f'User {user_tobe_added} does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            group = Group.objects.get(name=group_name)
+        except Group.DoesNotExist:
+            return Response({'error': f'Group {group_name} does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
+        user_instance.groups.remove(group)
+        return Response(status=status.HTTP_200_OK)
     
     
