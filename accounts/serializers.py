@@ -1,7 +1,7 @@
 from djoser import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField
 
 
 User = get_user_model()
@@ -22,3 +22,24 @@ class GroupSerializer(ModelSerializer):
     class Meta:
         model = Group
         fields = '__all__'
+        
+        
+class GroupCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['name']
+        extra_kwargs = {
+            'name': {'required': True}
+        }
+        
+class AddUserToGroupSerializer(ModelSerializer):
+    username = CharField(max_length=150, required=True)
+    group = CharField(max_length=150, required=True)
+    
+    class Meta:
+        model = User
+        fields = ['username', 'group']
+        extra_kwargs = {
+            'username': {'required': True},
+            'group': {'required': True}
+        }
