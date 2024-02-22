@@ -7,11 +7,14 @@ from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi, generators
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 User = get_user_model()
 
 class GroupView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get_queryset(self):
         groups = Group.objects.all()
         many = groups.count() > 1
@@ -63,6 +66,8 @@ class GroupView(APIView):
     
 
 class ManageGroup(APIView):
+    permission_classes = [AllowAny]
+    
     @swagger_auto_schema(operation_id='Add a user to a group', request_body=serializers.AddUserToGroupSerializer(), responses={201: 'User added to group successfully'})
     def post(self, request):
         data = request.data
