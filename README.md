@@ -44,11 +44,10 @@ Copy the secrete key and add it to your _SECRETE_KEY_ in your `.env` file.
     python3 manage.py migrate
 ```
 
-5. Set us a superuser account
+5. Set us a superuser account by privode the neccesary credentials
 ```
     python3 manage.py createsuperuser
 ```
-Privode the neccesary credentials
 
 6. Run the server
 ```
